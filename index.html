@@ -239,6 +239,8 @@
   <span class="toolbar-label">Ações:</span>
   <button class="btn btn-cyan" onclick="window.print()">🖨 Imprimir</button>
   <button class="btn btn-cyan" onclick="salvarAlteracoes()">💾 Salvar alterações</button>
+  <button class="btn btn-ghost" onclick="resetGitHubToken()">🔐 Token GitHub</button>
+  <button class="btn btn-ghost" onclick="exportHTML()">📥 Salvar HTML</button>
   <button class="btn btn-ghost" id="editModeBtn" onclick="toggleEditMode()">✏️ Modo Edição</button>
   <button class="btn btn-ghost" onclick="openDatasModal()">🗓 Datas Comemorativas</button>
   <div class="month-nav" id="monthNav"><button class="month-btn" id="mnav0">Jan</button><button class="month-btn" id="mnav1">Fev</button><button class="month-btn" id="mnav2">Mar</button><button class="month-btn active" id="mnav3">Abr</button><button class="month-btn" id="mnav4">Mai</button><button class="month-btn" id="mnav5">Jun</button><button class="month-btn" id="mnav6">Jul</button><button class="month-btn" id="mnav7">Ago</button><button class="month-btn" id="mnav8">Set</button><button class="month-btn" id="mnav9">Out</button><button class="month-btn" id="mnav10">Nov</button><button class="month-btn" id="mnav11">Dez</button></div>
@@ -1448,13 +1450,11 @@ function applyPlannerState(state){
   }
 }
 
-function salvarAlteracoes(){
+function saveSiteData(){
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(serializePlannerState()));
-    showToast('Alterações salvas com sucesso!');
   } catch (err) {
     console.error(err);
-    alert('Não foi possível salvar as alterações neste navegador.');
   }
 }
 
@@ -1468,6 +1468,147 @@ function carregarAlteracoes(){
     if (typeof updateStats === 'function') updateStats();
   } catch (err) {
     console.error(err);
+  }
+}
+
+function buildPersistentHtml(){
+  const state = serializePlannerState();
+  let src = document.documentElement.outerHTML;
+  const injected = `<script>window.__PERSISTED_CALENDAR_STATE__ = ${JSON.stringify(state)};<\/script>`;
+  if (src.includes('window.__PERSISTED_CALENDAR_STATE__')) {
+    src = src.replace(/<script>window\.__PERSISTED_CALENDAR_STATE__ = [\s\S]*?<\\\/script>/, injected);
+  } else {
+    src = src.replace('</body>', `${injected}\n</body>`);
+  }
+  return src;
+}
+
+(function bootstrapPersistedState(){
+  if (window.__PERSISTED_CALENDAR_STATE__) {
+    applyPlannerState(window.__PERSISTED_CALENDAR_STATE__);
+    renderAll();
+    if (typeof updateStats === 'function') updateStats();
+  }
+})();
+
+function inferGitHubPagesConfig(){
+  const host = window.location.hostname || '';
+  const rawPath = window.location.pathname || '/';
+  const owner = host.replace(/\.github\.io$/i,'');
+  const segments = rawPath.replace(/^\/+|\/+$/g,'').split('/').filter(Boolean);
+
+  let repo = '';
+  let filePath = 'index.html';
+
+  if(owner){
+    const isUserOrOrgPage = segments.length === 0 || (segments.length === 1 && /^index\.html?$/i.test(segments[0]));
+    if(isUserOrOrgPage){
+      repo = `${owner}.github.io`;
+      filePath = segments.length ? segments[0] : 'index.html';
+    } else {
+      repo = segments[0];
+      const rest = segments.slice(1);
+      filePath = rest.length ? rest.join('/') : 'index.html';
+    }
+  }
+
+  filePath = (filePath || 'index.html').replace(/^\/+/, '').replace(/\/+$/,'');
+  if(!filePath || !/\.html?$/i.test(filePath)){
+    filePath = filePath ? `${filePath}/index.html` : 'index.html';
+  }
+
+  return { owner, repo, branch: 'main', path: filePath, token: '' };
+}
+
+const GITHUB_CFG_KEY = 'calendar-github-pages-config-v1';
+
+function loadGitHubPagesConfig(){
+  const inferred = inferGitHubPagesConfig();
+  try{
+    const saved = JSON.parse(localStorage.getItem(GITHUB_CFG_KEY) || '{}');
+    return {
+      ...inferred,
+      branch: saved.branch || inferred.branch,
+      token: saved.token || ''
+    };
+  }catch(_err){
+    return inferred;
+  }
+}
+
+function saveGitHubPagesConfig(cfg){
+  const current = loadGitHubPagesConfig();
+  const next = {
+    branch: cfg.branch || current.branch || 'main',
+    token: cfg.token || ''
+  };
+  localStorage.setItem(GITHUB_CFG_KEY, JSON.stringify(next));
+}
+
+function resetGitHubToken(){
+  localStorage.removeItem(GITHUB_CFG_KEY);
+  showToast('Configuração local removida. No próximo salvamento o token será solicitado novamente.');
+}
+
+async function fetchGitHubFileMeta(cfg){
+  const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}?ref=${encodeURIComponent(cfg.branch)}`;
+  const response = await fetch(url, {
+    headers: {
+      'Accept': 'application/vnd.github+json',
+      ...(cfg.token ? { 'Authorization': `Bearer ${cfg.token}` } : {})
+    }
+  });
+  if(!response.ok){
+    const text = await response.text();
+    throw new Error(`Não foi possível localizar o arquivo no GitHub (${response.status}). ${text}`);
+  }
+  return response.json();
+}
+
+async function salvarAlteracoes(){
+  try {
+    saveSiteData();
+
+    let cfg = loadGitHubPagesConfig();
+    if(!cfg.owner || !cfg.repo){
+      throw new Error('Não foi possível identificar automaticamente o repositório GitHub Pages deste site.');
+    }
+
+    if(!cfg.token){
+      const token = window.prompt('Cole seu token do GitHub com permissão de escrita no repositório:');
+      if(!token) return;
+      cfg.token = token.trim();
+      saveGitHubPagesConfig(cfg);
+    }
+
+    const meta = await fetchGitHubFileMeta(cfg);
+    const html = buildPersistentHtml();
+    const content = btoa(unescape(encodeURIComponent(html)));
+
+    const response = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/vnd.github+json',
+        'Authorization': `Bearer ${cfg.token}`
+      },
+      body: JSON.stringify({
+        message: `Atualiza calendário editorial — ${new Date().toLocaleString('pt-BR')}`,
+        content,
+        sha: meta.sha,
+        branch: cfg.branch
+      })
+    });
+
+    if(!response.ok){
+      const text = await response.text();
+      throw new Error(`Não foi possível salvar no GitHub (${response.status}). ${text}`);
+    }
+
+    showToast('✅ Alterações salvas no GitHub!');
+  } catch (err) {
+    console.error(err);
+    alert(err.message || 'Não foi possível salvar as alterações.');
   }
 }
 
