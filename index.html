@@ -215,6 +215,7 @@
 
   @media print{.toolbar,.add-post-btn,.card-actions,.add-thumb-btn{display:none!important;}body{background:#fff;}.post-card{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -238,17 +239,15 @@
 <div class="toolbar">
   <span class="toolbar-label">Ações:</span>
   <button class="btn btn-cyan" onclick="window.print()">🖨 Imprimir</button>
-  <button class="btn btn-cyan" onclick="salvarAlteracoes()">💾 Salvar alterações</button>
-  <button class="btn btn-ghost" onclick="resetGitHubToken()">🔐 Token GitHub</button>
-  <button class="btn btn-ghost" onclick="exportHTML()">📥 Salvar HTML</button>
+  <button class="btn btn-cyan" onclick="salvarAlteracoes()">💾 Salvar no site</button>
   <button class="btn btn-ghost" id="editModeBtn" onclick="toggleEditMode()">✏️ Modo Edição</button>
   <button class="btn btn-ghost" onclick="openDatasModal()">🗓 Datas Comemorativas</button>
-  <div class="month-nav" id="monthNav"><button class="month-btn active" id="mnav0">Jan</button><button class="month-btn" id="mnav1">Fev</button><button class="month-btn" id="mnav2">Mar</button><button class="month-btn" id="mnav3">Abr</button><button class="month-btn" id="mnav4">Mai</button><button class="month-btn" id="mnav5">Jun</button><button class="month-btn" id="mnav6">Jul</button><button class="month-btn" id="mnav7">Ago</button><button class="month-btn" id="mnav8">Set</button><button class="month-btn" id="mnav9">Out</button><button class="month-btn" id="mnav10">Nov</button><button class="month-btn" id="mnav11">Dez</button><button class="month-btn" id="mnav0">Jan</button><button class="month-btn" id="mnav1">Fev</button><button class="month-btn" id="mnav2">Mar</button><button class="month-btn" id="mnav3">Abr</button><button class="month-btn" id="mnav4">Mai</button><button class="month-btn" id="mnav5">Jun</button><button class="month-btn" id="mnav6">Jul</button><button class="month-btn" id="mnav7">Ago</button><button class="month-btn" id="mnav8">Set</button><button class="month-btn" id="mnav9">Out</button><button class="month-btn" id="mnav10">Nov</button><button class="month-btn" id="mnav11">Dez</button></div>
+  <div class="month-nav" id="monthNav"><button class="month-btn" id="mnav0">Jan</button><button class="month-btn" id="mnav1">Fev</button><button class="month-btn" id="mnav2">Mar</button><button class="month-btn active" id="mnav3">Abr</button><button class="month-btn" id="mnav4">Mai</button><button class="month-btn" id="mnav5">Jun</button><button class="month-btn" id="mnav6">Jul</button><button class="month-btn" id="mnav7">Ago</button><button class="month-btn" id="mnav8">Set</button><button class="month-btn" id="mnav9">Out</button><button class="month-btn" id="mnav10">Nov</button><button class="month-btn" id="mnav11">Dez</button></div>
 </div>
 
 <div class="stats-bar">
-  <div class="stat-pill"><div class="num" style="color:var(--navy)" id="statTotal">11</div><div class="lbl">Total Posts</div></div>
-  <div class="stat-pill"><div class="num" style="color:var(--arte)" id="statArte">6</div><div class="lbl">Artes</div></div>
+  <div class="stat-pill"><div class="num" style="color:var(--navy)" id="statTotal">10</div><div class="lbl">Total Posts</div></div>
+  <div class="stat-pill"><div class="num" style="color:var(--arte)" id="statArte">5</div><div class="lbl">Artes</div></div>
   <div class="stat-pill"><div class="num" style="color:var(--foto)" id="statFoto">0</div><div class="lbl">Fotos</div></div>
   <div class="stat-pill"><div class="num" style="color:var(--story)" id="statStory">0</div><div class="lbl">Stories</div></div>
   <div class="stat-pill"><div class="num" style="color:var(--reels)" id="statReels">4</div><div class="lbl">Reels</div></div>
@@ -290,20 +289,7 @@
         <textarea class="plan-input" style="min-height:48px;resize:vertical" placeholder="Anotações livres, pendências, decisões, reuniões, contatos…" onchange="savePlanField(1,'observacoes',this.value)"></textarea>
       </div>
     </div>
-  </div><div class="cal-grid-outer"><div class="cal-dow"><div class="cal-dow-cell wknd">Dom</div><div class="cal-dow-cell">Seg</div><div class="cal-dow-cell">Ter</div><div class="cal-dow-cell">Qua</div><div class="cal-dow-cell">Qui</div><div class="cal-dow-cell">Sex</div><div class="cal-dow-cell wknd">Sáb</div></div><div class="cal-weeks"><div class="cal-week"><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day" data-day="1"><div class="day-num">1</div><div class="special-label">🎆 Ano Novo</div><button class="add-post-btn" onclick="openModal(0,1,true)">＋ post</button></div><div class="cal-day" data-day="2"><div class="day-num">2</div><button class="add-post-btn" onclick="openModal(0,2,true)">＋ post</button></div><div class="cal-day wknd-col" data-day="3"><div class="day-num">3</div><button class="add-post-btn" onclick="openModal(0,3,true)">＋ post</button></div></div><div class="cal-week"><div class="cal-day wknd-col" data-day="4"><div class="day-num">4</div>
-            <div class="post-card arte" onclick="openModal(0,4)">
-              <div class="card-actions">
-                <button class="card-btn" onclick="event.stopPropagation();togglePostado(0,4)" title="Toggle postado">✅</button>
-                <button class="card-btn" onclick="event.stopPropagation();openModal(0,4)">✏️</button>
-                <button class="card-btn" onclick="event.stopPropagation();deletePostByKey(0,4)">🗑</button>
-              </div>
-              <div class="post-type-tag">🎨 Arte</div>
-              
-              <div class="post-title" contenteditable="true" spellcheck="false" onclick="event.stopPropagation()" onblur="updateTitle(0,4,this.innerText)">teste</div>
-              
-              
-              <div class="card-gallery"><button class="add-thumb-btn" onclick="event.stopPropagation();triggerCardImg(0,4)" title="Adicionar foto">＋</button></div>
-            </div></div><div class="cal-day" data-day="5"><div class="day-num">5</div><button class="add-post-btn" onclick="openModal(0,5,true)">＋ post</button></div><div class="cal-day" data-day="6"><div class="day-num">6</div><div class="special-label">🏖️ Feriado RJ</div><button class="add-post-btn" onclick="openModal(0,6,true)">＋ post</button></div><div class="cal-day" data-day="7"><div class="day-num">7</div><button class="add-post-btn" onclick="openModal(0,7,true)">＋ post</button></div><div class="cal-day" data-day="8"><div class="day-num">8</div><button class="add-post-btn" onclick="openModal(0,8,true)">＋ post</button></div><div class="cal-day" data-day="9"><div class="day-num">9</div><button class="add-post-btn" onclick="openModal(0,9,true)">＋ post</button></div><div class="cal-day wknd-col" data-day="10"><div class="day-num">10</div><button class="add-post-btn" onclick="openModal(0,10,true)">＋ post</button></div></div><div class="cal-week"><div class="cal-day wknd-col" data-day="11"><div class="day-num">11</div><button class="add-post-btn" onclick="openModal(0,11,true)">＋ post</button></div><div class="cal-day" data-day="12"><div class="day-num">12</div><button class="add-post-btn" onclick="openModal(0,12,true)">＋ post</button></div><div class="cal-day" data-day="13"><div class="day-num">13</div><button class="add-post-btn" onclick="openModal(0,13,true)">＋ post</button></div><div class="cal-day" data-day="14"><div class="day-num">14</div><button class="add-post-btn" onclick="openModal(0,14,true)">＋ post</button></div><div class="cal-day" data-day="15"><div class="day-num">15</div><button class="add-post-btn" onclick="openModal(0,15,true)">＋ post</button></div><div class="cal-day" data-day="16"><div class="day-num">16</div><button class="add-post-btn" onclick="openModal(0,16,true)">＋ post</button></div><div class="cal-day wknd-col" data-day="17"><div class="day-num">17</div><button class="add-post-btn" onclick="openModal(0,17,true)">＋ post</button></div></div><div class="cal-week"><div class="cal-day wknd-col" data-day="18"><div class="day-num">18</div><button class="add-post-btn" onclick="openModal(0,18,true)">＋ post</button></div><div class="cal-day" data-day="19"><div class="day-num">19</div><button class="add-post-btn" onclick="openModal(0,19,true)">＋ post</button></div><div class="cal-day" data-day="20"><div class="day-num">20</div><button class="add-post-btn" onclick="openModal(0,20,true)">＋ post</button></div><div class="cal-day" data-day="21"><div class="day-num">21</div><button class="add-post-btn" onclick="openModal(0,21,true)">＋ post</button></div><div class="cal-day" data-day="22"><div class="day-num">22</div><button class="add-post-btn" onclick="openModal(0,22,true)">＋ post</button></div><div class="cal-day" data-day="23"><div class="day-num">23</div><button class="add-post-btn" onclick="openModal(0,23,true)">＋ post</button></div><div class="cal-day wknd-col" data-day="24"><div class="day-num">24</div><button class="add-post-btn" onclick="openModal(0,24,true)">＋ post</button></div></div><div class="cal-week"><div class="cal-day wknd-col" data-day="25"><div class="day-num">25</div><button class="add-post-btn" onclick="openModal(0,25,true)">＋ post</button></div><div class="cal-day" data-day="26"><div class="day-num">26</div><button class="add-post-btn" onclick="openModal(0,26,true)">＋ post</button></div><div class="cal-day" data-day="27"><div class="day-num">27</div><button class="add-post-btn" onclick="openModal(0,27,true)">＋ post</button></div><div class="cal-day" data-day="28"><div class="day-num">28</div><button class="add-post-btn" onclick="openModal(0,28,true)">＋ post</button></div><div class="cal-day" data-day="29"><div class="day-num">29</div><button class="add-post-btn" onclick="openModal(0,29,true)">＋ post</button></div><div class="cal-day" data-day="30"><div class="day-num">30</div><button class="add-post-btn" onclick="openModal(0,30,true)">＋ post</button></div><div class="cal-day wknd-col" data-day="31"><div class="day-num">31</div><button class="add-post-btn" onclick="openModal(0,31,true)">＋ post</button></div></div></div></div></div><div class="month-block" id="month-1"><div class="month-header"><div class="month-title">Fevereiro <em>2026</em></div><div class="month-badge">Mês 2</div></div><div class="month-notes" contenteditable="true" data-month="2" placeholder="Descreva a campanha do mês, promoções, objetivos, datas importantes…"></div><div class="plan-panel">
+  </div><div class="cal-grid-outer"><div class="cal-dow"><div class="cal-dow-cell wknd">Dom</div><div class="cal-dow-cell">Seg</div><div class="cal-dow-cell">Ter</div><div class="cal-dow-cell">Qua</div><div class="cal-dow-cell">Qui</div><div class="cal-dow-cell">Sex</div><div class="cal-dow-cell wknd">Sáb</div></div><div class="cal-weeks"><div class="cal-week"><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day" data-day="1"><div class="day-num">1</div><div class="special-label">🎆 Ano Novo</div><button class="add-post-btn" onclick="openModal(0,1,true)">＋ post</button></div><div class="cal-day" data-day="2"><div class="day-num">2</div><button class="add-post-btn" onclick="openModal(0,2,true)">＋ post</button></div><div class="cal-day wknd-col" data-day="3"><div class="day-num">3</div><button class="add-post-btn" onclick="openModal(0,3,true)">＋ post</button></div></div><div class="cal-week"><div class="cal-day wknd-col" data-day="4"><div class="day-num">4</div><button class="add-post-btn" onclick="openModal(0,4,true)">＋ post</button></div><div class="cal-day" data-day="5"><div class="day-num">5</div><button class="add-post-btn" onclick="openModal(0,5,true)">＋ post</button></div><div class="cal-day" data-day="6"><div class="day-num">6</div><div class="special-label">🏖️ Feriado RJ</div><button class="add-post-btn" onclick="openModal(0,6,true)">＋ post</button></div><div class="cal-day" data-day="7"><div class="day-num">7</div><button class="add-post-btn" onclick="openModal(0,7,true)">＋ post</button></div><div class="cal-day" data-day="8"><div class="day-num">8</div><button class="add-post-btn" onclick="openModal(0,8,true)">＋ post</button></div><div class="cal-day" data-day="9"><div class="day-num">9</div><button class="add-post-btn" onclick="openModal(0,9,true)">＋ post</button></div><div class="cal-day wknd-col" data-day="10"><div class="day-num">10</div><button class="add-post-btn" onclick="openModal(0,10,true)">＋ post</button></div></div><div class="cal-week"><div class="cal-day wknd-col" data-day="11"><div class="day-num">11</div><button class="add-post-btn" onclick="openModal(0,11,true)">＋ post</button></div><div class="cal-day" data-day="12"><div class="day-num">12</div><button class="add-post-btn" onclick="openModal(0,12,true)">＋ post</button></div><div class="cal-day" data-day="13"><div class="day-num">13</div><button class="add-post-btn" onclick="openModal(0,13,true)">＋ post</button></div><div class="cal-day" data-day="14"><div class="day-num">14</div><button class="add-post-btn" onclick="openModal(0,14,true)">＋ post</button></div><div class="cal-day" data-day="15"><div class="day-num">15</div><button class="add-post-btn" onclick="openModal(0,15,true)">＋ post</button></div><div class="cal-day" data-day="16"><div class="day-num">16</div><button class="add-post-btn" onclick="openModal(0,16,true)">＋ post</button></div><div class="cal-day wknd-col" data-day="17"><div class="day-num">17</div><button class="add-post-btn" onclick="openModal(0,17,true)">＋ post</button></div></div><div class="cal-week"><div class="cal-day wknd-col" data-day="18"><div class="day-num">18</div><button class="add-post-btn" onclick="openModal(0,18,true)">＋ post</button></div><div class="cal-day" data-day="19"><div class="day-num">19</div><button class="add-post-btn" onclick="openModal(0,19,true)">＋ post</button></div><div class="cal-day" data-day="20"><div class="day-num">20</div><button class="add-post-btn" onclick="openModal(0,20,true)">＋ post</button></div><div class="cal-day" data-day="21"><div class="day-num">21</div><button class="add-post-btn" onclick="openModal(0,21,true)">＋ post</button></div><div class="cal-day" data-day="22"><div class="day-num">22</div><button class="add-post-btn" onclick="openModal(0,22,true)">＋ post</button></div><div class="cal-day" data-day="23"><div class="day-num">23</div><button class="add-post-btn" onclick="openModal(0,23,true)">＋ post</button></div><div class="cal-day wknd-col" data-day="24"><div class="day-num">24</div><button class="add-post-btn" onclick="openModal(0,24,true)">＋ post</button></div></div><div class="cal-week"><div class="cal-day wknd-col" data-day="25"><div class="day-num">25</div><button class="add-post-btn" onclick="openModal(0,25,true)">＋ post</button></div><div class="cal-day" data-day="26"><div class="day-num">26</div><button class="add-post-btn" onclick="openModal(0,26,true)">＋ post</button></div><div class="cal-day" data-day="27"><div class="day-num">27</div><button class="add-post-btn" onclick="openModal(0,27,true)">＋ post</button></div><div class="cal-day" data-day="28"><div class="day-num">28</div><button class="add-post-btn" onclick="openModal(0,28,true)">＋ post</button></div><div class="cal-day" data-day="29"><div class="day-num">29</div><button class="add-post-btn" onclick="openModal(0,29,true)">＋ post</button></div><div class="cal-day" data-day="30"><div class="day-num">30</div><button class="add-post-btn" onclick="openModal(0,30,true)">＋ post</button></div><div class="cal-day wknd-col" data-day="31"><div class="day-num">31</div><button class="add-post-btn" onclick="openModal(0,31,true)">＋ post</button></div></div></div></div></div><div class="month-block" id="month-1"><div class="month-header"><div class="month-title">Fevereiro <em>2026</em></div><div class="month-badge">Mês 2</div></div><div class="month-notes" contenteditable="true" data-month="2" placeholder="Descreva a campanha do mês, promoções, objetivos, datas importantes…"></div><div class="plan-panel">
     <div class="plan-header-row">
       <span class="plan-icon">📋</span>
       <span>Planejamento do Mês</span>
@@ -377,29 +363,29 @@
     <div class="plan-grid">
       <div class="plan-cell">
         <div class="plan-label"><span>🎯</span> Objetivos de Campanha</div>
-        <textarea class="plan-input tall" placeholder="Ex: Aumentar leads, lançar promoção, gerar awareness…" onchange="savePlanField(4,'objetivos',this.value)">Dividir material institucional e também dia a dia.</textarea>
+        <textarea class="plan-input tall" placeholder="Ex: Aumentar leads, lançar promoção, gerar awareness…" onchange="savePlanField(4,'objetivos',this.value)" style="height: 51px;"></textarea>
       </div>
       <div class="plan-cell">
         <div class="plan-label"><span>💰</span> Investimento em Mídia</div>
-        <textarea class="plan-input tall" placeholder="Ex: R$ 1.000 — Meta Ads + Google Ads…" onchange="savePlanField(4,'investimento',this.value)">300 reais.</textarea>
+        <textarea class="plan-input tall" placeholder="Ex: R$ 1.000 — Meta Ads + Google Ads…" onchange="savePlanField(4,'investimento',this.value)" style="height: 51px;"></textarea>
       </div>
       <div class="plan-cell">
         <div class="plan-label"><span>💸</span> Tráfego Pago</div>
-        <textarea class="plan-input tall" placeholder="Ex: R$ 600 Meta Ads (feed + stories), R$ 400 Google. Públicos, segmentações…" onchange="savePlanField(4,'trafego',this.value)">300 reais em meta ads.</textarea>
+        <textarea class="plan-input tall" placeholder="Ex: R$ 600 Meta Ads (feed + stories), R$ 400 Google. Públicos, segmentações…" onchange="savePlanField(4,'trafego',this.value)" style="height: 46px;"></textarea>
       </div>
       <div class="plan-cell">
         <div class="plan-label"><span>🌟</span> Influenciadores</div>
-        <textarea class="plan-input tall" placeholder="Ex: @perfil — tipo de conteúdo, formato, prazo…" onchange="savePlanField(4,'influenciadores',this.value)">nenhum.</textarea>
+        <textarea class="plan-input tall" placeholder="Ex: @perfil — tipo de conteúdo, formato, prazo…" onchange="savePlanField(4,'influenciadores',this.value)"></textarea>
       </div>
       <div class="plan-cell" style="border-right:none">
         <div class="plan-label"><span>👤</span> Persona do Mês</div>
-        <textarea class="plan-input tall" placeholder="Ex: Público-alvo, faixa etária, dores, plataformas que usa…" onchange="savePlanField(4,'persona',this.value)">Mulheres 35+, Homens 30+.</textarea>
+        <textarea class="plan-input tall" placeholder="Ex: Público-alvo, faixa etária, dores, plataformas que usa…" onchange="savePlanField(4,'persona',this.value)"></textarea>
       </div>
     </div>
     <div class="plan-grid-bottom">
       <div class="plan-cell-full">
         <div class="plan-label"><span>📝</span> Observações Gerais</div>
-        <textarea class="plan-input" style="min-height:48px;resize:vertical" placeholder="Anotações livres, pendências, decisões, reuniões, contatos…" onchange="savePlanField(4,'observacoes',this.value)">Tentar nova captação com temas atuais para lançar rápido.</textarea>
+        <textarea class="plan-input" style="min-height:48px;resize:vertical" placeholder="Anotações livres, pendências, decisões, reuniões, contatos…" onchange="savePlanField(4,'observacoes',this.value)"></textarea>
       </div>
     </div>
   </div><div class="cal-grid-outer"><div class="cal-dow"><div class="cal-dow-cell wknd">Dom</div><div class="cal-dow-cell">Seg</div><div class="cal-dow-cell">Ter</div><div class="cal-dow-cell">Qua</div><div class="cal-dow-cell">Qui</div><div class="cal-dow-cell">Sex</div><div class="cal-dow-cell wknd">Sáb</div></div><div class="cal-weeks"><div class="cal-week"><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day empty"><div class="day-num"></div></div><div class="cal-day" data-day="1"><div class="day-num">1</div><div class="special-label">🤥 Dia da Mentira</div>
@@ -802,14 +788,14 @@
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <div class="modal-header">
-      <h3>Editar Post · <span id="modalDateLabel">4/1/2026</span></h3>
+      <h3>Editar Post · <span id="modalDateLabel"></span></h3>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-body">
       <div class="form-group">
         <label>Tipo de Conteúdo</label>
         <div class="type-grid">
-          <div class="type-opt selected" data-type="arte" onclick="selectType('arte')">🎨 Arte</div>
+          <div class="type-opt" data-type="arte" onclick="selectType('arte')">🎨 Arte</div>
           <div class="type-opt" data-type="foto" onclick="selectType('foto')">📸 Foto</div>
           <div class="type-opt" data-type="story" onclick="selectType('story')">📱 Story</div>
           <div class="type-opt" data-type="reels" onclick="selectType('reels')">🎬 Reels</div>
@@ -830,7 +816,7 @@
         <label>Descrição do Post</label>
         <textarea id="modalDescricao" placeholder="Descreva o que vai aparecer no story…" style="min-height:100px"></textarea>
       </div>
-      <div class="form-group" id="fieldImgObs" style="">
+      <div class="form-group" id="fieldImgObs" style="display:none">
         <label>Observações de Imagem / Vídeo</label>
         <textarea id="modalImgObs" placeholder="Descreva a imagem ideal, enquadramento, luz, referências…" style="min-height:120px"></textarea>
       </div>
@@ -847,13 +833,14 @@ Slide 2: …" style="min-height:160px"></textarea>
         <label>Nº de Slides</label>
         <input type="text" id="modalSlidesNum" placeholder="Ex: 7 slides">
       </div>
-      <div class="form-group" id="fieldCaption" style="">
+      <div class="form-group" id="fieldCaption">
         <label>Legenda completa</label>
         <textarea id="modalCaption" placeholder="Texto, hashtags, telefone…"></textarea>
       </div>
       <div class="form-group">
         <div class="mgal-label">Imagens / Fotos <span class="mgal-hint">— arraste ou clique em ＋</span></div>
-        <div class="modal-gallery" id="modalGallery" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleDrop(event)"><button class="mgal-add" type="button"><span style="font-size:22px">＋</span><span class="lbl">foto</span></button></div>
+        <div class="modal-gallery" id="modalGallery" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleDrop(event)">
+        </div>
       </div>
       <div class="form-group" id="fieldVideoLink" style="display:none">
         <label>🎬 Link do Vídeo</label>
@@ -927,7 +914,7 @@ Slide 2: …" style="min-height:160px"></textarea>
   </div>
 </div>
 
-<div class="toast" id="toast">Configuração local removida. No próximo salvamento o token será solicitado novamente.</div>
+<div class="toast" id="toast"></div>
 
 <script>
 // ─────────────────────────────────────────────
@@ -1435,6 +1422,17 @@ document.querySelectorAll('.month-block').forEach(el=>observer.observe(el));
 
 const STORAGE_KEY = 'calendario_editorial_dr_andre_pontes_abril_2026';
 
+// ===== SUPABASE SAFE PATCH =====
+const SUPABASE_URL = 'https://aprneolltdkizvfakuus.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_tmWBQV8mZnk7FBvq1iZ3pA_lprGokcu';
+
+const supabaseClient = window.supabase && typeof window.supabase.createClient === 'function'
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+  : null;
+
+const CALENDAR_ID = 'dr-andre-pontes-abril-2026';
+const CALENDAR_NAME = 'Calendário Editorial Dr. Ândre Pontes - Abril 2026';
+
 function serializePlannerState(){
   return {
     hdrClient: document.getElementById('hdrClient')?.innerHTML || '',
@@ -1448,11 +1446,22 @@ function serializePlannerState(){
 
 function applyPlannerState(state){
   if(!state) return;
-  if(state.hdrClient && document.getElementById('hdrClient')) document.getElementById('hdrClient').innerHTML = state.hdrClient;
-  if(state.hdrYear && document.getElementById('hdrYear')) document.getElementById('hdrYear').innerHTML = state.hdrYear;
-  if(state.hdrSub && document.getElementById('hdrSub')) document.getElementById('hdrSub').innerHTML = state.hdrSub;
+
+  if(state.hdrClient && document.getElementById('hdrClient')) {
+    document.getElementById('hdrClient').innerHTML = state.hdrClient;
+  }
+
+  if(state.hdrYear && document.getElementById('hdrYear')) {
+    document.getElementById('hdrYear').innerHTML = state.hdrYear;
+  }
+
+  if(state.hdrSub && document.getElementById('hdrSub')) {
+    document.getElementById('hdrSub').innerHTML = state.hdrSub;
+  }
+
   if(Array.isArray(state.posts)) POSTS = state.posts;
   if(state.planData && typeof state.planData === 'object') PLAN_DATA = state.planData;
+
   if(Array.isArray(state.monthsConfig)){
     state.monthsConfig.forEach((saved, idx) => {
       if(!MONTHS_CONFIG[idx] || !saved) return;
@@ -1462,172 +1471,135 @@ function applyPlannerState(state){
   }
 }
 
-function saveSiteData(){
+function saveLocalBackup(data){
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(serializePlannerState()));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch (err) {
+    console.error('Erro ao salvar backup local:', err);
+  }
+}
+
+function loadLocalBackup(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return null;
+    return JSON.parse(raw);
+  } catch (err) {
+    console.error('Erro ao carregar backup local:', err);
+    return null;
+  }
+}
+
+function getSiteData(){
+  return serializePlannerState();
+}
+
+function applySiteData(data){
+  applyPlannerState(data);
+  if(typeof renderAll === 'function') renderAll();
+  if(typeof updateStats === 'function') updateStats();
+}
+
+async function saveSiteData(){
+  const payload = getSiteData();
+  saveLocalBackup(payload);
+
+  if(!supabaseClient){
+    showToast('⚠️ Salvo só neste navegador.');
+    return;
+  }
+
+  try {
+    const { error } = await supabaseClient
+      .from('calendarios')
+      .upsert({
+        id: CALENDAR_ID,
+        nome: CALENDAR_NAME,
+        dados: payload
+      }, { onConflict: 'id' });
+
+    if(error){
+      console.error(error);
+      showToast('⚠️ Salvo localmente, mas falhou no site.');
+      return;
+    }
+
+    showToast('✅ Salvo no site!');
   } catch (err) {
     console.error(err);
+    showToast('⚠️ Salvo localmente, mas falhou no site.');
   }
+}
+
+async function loadSiteData(){
+  if(supabaseClient){
+    try {
+      const { data, error } = await supabaseClient
+        .from('calendarios')
+        .select('dados')
+        .eq('id', CALENDAR_ID)
+        .maybeSingle();
+
+      if(error) {
+        console.warn('Erro ao carregar do Supabase:', error);
+      }
+
+      if(data && data.dados){
+        applySiteData(data.dados);
+        return;
+      }
+    } catch (err) {
+      console.warn('Erro ao carregar do Supabase:', err);
+    }
+  }
+
+  const localData = loadLocalBackup();
+  if(localData) applySiteData(localData);
+}
+
+// Mantém compatibilidade com o botão original do arquivo.
+function salvarAlteracoes(){
+  saveSiteData();
 }
 
 function carregarAlteracoes(){
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if(!raw) return;
-    const state = JSON.parse(raw);
-    applyPlannerState(state);
-    renderAll();
-    if (typeof updateStats === 'function') updateStats();
-  } catch (err) {
-    console.error(err);
-  }
+  loadSiteData();
 }
 
-function buildPersistentHtml(){
-  const state = serializePlannerState();
-  let src = document.documentElement.outerHTML;
-  const injected = `<script>window.__PERSISTED_CALENDAR_STATE__ = {"hdrClient":"Dr. Ândre Pontes","hdrYear":"2026","hdrSub":"CALENDÁRIO EDITORIAL — @DR.ANDREPONTES","posts":[{"caption":"Conteúdo já aprovado — manter conforme versão final validada.\n\n🩺 Saúde e emagrecimento\n👨‍⚕️ Dr. Ândre Pontes | CRM 52 123760-8\nEntre em contato pelo link da bio.","descricao":"","imgObs":"","roteiro":"Conteúdo já aprovado pelo Dr. Ândre Pontes.\nManter roteiro conforme versão final validada.","videoLink":"","slides":"","slidesNum":"","postado":false,"month":4,"day":1,"type":"reels","title":"ANVISA ✅","pending":false,"trafego":false,"perfil":"","imgs":[]},{"caption":"Muitas pessoas só percebem a importância da saúde quando algo começa a dar errado.\nMas o corpo costuma dar sinais muito antes disso.\n\nFalta de energia constante, dificuldade de concentração, sono ruim ou sensação de cansaço frequente podem indicar que algo no organismo precisa de atenção.\n\nSaúde é mais do que não estar doente.\nÉ ter energia, equilíbrio e qualidade de vida.\n\n🩺 Saúde e emagrecimento\n👨‍⚕️ Dr. Ândre Pontes | CRM 52 123760-8\nAgende sua avaliação pelo link da bio.","descricao":"","imgObs":"Texto central da arte:\nSaúde não é só ausência de doença.\nÉ ter energia para viver o dia.\n\nPequenos pontos abaixo:\n• disposição ao acordar\n• foco mental\n• sono reparador\n• estabilidade emocional\n\nEstilo clean, profissional, cores sóbrias. Logo/identidade do Dr. Ândre Pontes.","roteiro":"","videoLink":"","slides":"","slidesNum":"","postado":false,"month":4,"day":3,"type":"arte","title":"Seu nível de energia diz muito sobre sua saúde","pending":false,"trafego":false,"perfil":"","imgs":[]},{"caption":"O Dia Mundial da Saúde é um momento importante para lembrar que cuidar do corpo não deve ser algo deixado para depois.\n\nSaúde envolve equilíbrio físico, mental e metabólico.\nE muitas vezes pequenos sinais do corpo já indicam que algo precisa de atenção.\n\nA prevenção e o acompanhamento profissional fazem toda a diferença para manter qualidade de vida ao longo do tempo.\n\n🩺 Saúde e emagrecimento\n👨‍⚕️ Dr. Ândre Pontes | CRM 52 123760-8\nEntre em contato pelo link da bio.","descricao":"","imgObs":"Arte institucional — Dia Mundial da Saúde (07 de Abril)\n\nImagem principal: Foto do Dr. Ândre Pontes em ambiente clínico ou com postura profissional.\n\nTexto central:\n07 de Abril — Dia Mundial da Saúde\n\nFrase de destaque:\nCuidar da saúde hoje é cuidar do seu futuro.\n\nObjetivo: Reforçar autoridade médica e posicionamento profissional.","roteiro":"","videoLink":"","slides":"","slidesNum":"","postado":false,"month":4,"day":7,"type":"arte","title":"Cuidar da saúde é investir na vida","pending":false,"trafego":false,"perfil":"","imgs":[]},{"caption":"Conteúdo já aprovado — manter conforme versão final validada.\n\n🩺 Saúde e emagrecimento\n👨‍⚕️ Dr. Ândre Pontes | CRM 52 123760-8\nEntre em contato pelo link da bio.","descricao":"","imgObs":"","roteiro":"Conteúdo já aprovado pelo Dr. Ândre Pontes.\nManter roteiro conforme versão final validada.","videoLink":"","slides":"","slidesNum":"","postado":false,"month":4,"day":9,"type":"reels","title":"Pancreatite ✅","pending":false,"trafego":false,"perfil":"","imgs":[]},{"caption":"Mudanças muito radicais podem até gerar resultados rápidos no início.\nMas na maioria das vezes são difíceis de manter ao longo do tempo.\n\nQuando o corpo passa por restrições intensas ou rotinas muito rígidas, ele tende a reagir criando mecanismos de adaptação.\n\nPor isso, estratégias mais equilibradas costumam gerar resultados mais consistentes e duradouros.\n\nSaúde sustentável é construída com constância.\n\n🩺 Saúde e emagrecimento\n👨‍⚕️ Dr. Ândre Pontes | CRM 52 123760-8\nAgende sua consulta pelo link da bio.","descricao":"","imgObs":"Texto central da arte:\nResultados que duram\nnão nascem de extremos.\n\nEstilo clean, profissional. Identidade visual do Dr. Ândre Pontes.","roteiro":"","videoLink":"","slides":"","slidesNum":"","postado":false,"month":4,"day":13,"type":"arte","title":"Saúde sustentável não nasce de radicalismo","pending":false,"trafego":false,"perfil":"","imgs":[]},{"caption":"Conteúdo já aprovado — manter conforme versão final validada.\n\n🩺 Saúde e emagrecimento\n👨‍⚕️ Dr. Ândre Pontes | CRM 52 123760-8\nEntre em contato pelo link da bio.","descricao":"","imgObs":"","roteiro":"Conteúdo já aprovado pelo Dr. Ândre Pontes.\nManter roteiro conforme versão final validada.","videoLink":"","slides":"","slidesNum":"","postado":false,"month":4,"day":15,"type":"reels","title":"Cada organismo é diferente ✅","pending":false,"trafego":false,"perfil":"","imgs":[]},{"caption":"Quando o corpo passa por um processo de melhora metabólica, as mudanças não aparecem apenas na balança.\n\nRedução de inflamação, melhora da circulação, equilíbrio hormonal e hábitos mais saudáveis também influenciam a aparência do rosto.\n\nO que muitas vezes parece apenas uma mudança estética é, na verdade, reflexo de um organismo funcionando de forma mais equilibrada.\n\nMais importante do que perder peso é melhorar a saúde como um todo.\n\n🩺 Saúde e emagrecimento\n👨‍⚕️ Dr. Ândre Pontes | CRM 52 123760-8\nAgende sua avaliação pelo link da bio.","descricao":"","imgObs":"","roteiro":"","videoLink":"","slides":"Slide 1 — Capa\nTítulo: O emagrecimento muda mais do que o peso.\nSubtítulo: Quando o corpo melhora por dentro, o rosto também reflete essas mudanças.\n\nSlide 2 — Redução de inflamação\nTítulo: Menos inflamação no organismo\nTexto: O excesso de gordura corporal está diretamente ligado a processos inflamatórios. Quando ocorre o emagrecimento, essa inflamação tende a diminuir, melhorando a aparência da pele e reduzindo sinais de cansaço no rosto.\n\nSlide 3 — Menos retenção de líquido\nTítulo: Redução do inchaço facial\nTexto: Alterações hormonais, inflamação e hábitos alimentares podem causar retenção de líquidos. Com o equilíbrio metabólico, o rosto tende a ficar menos inchado e mais definido.\n\nSlide 4 — Melhora da circulação\nTítulo: Circulação sanguínea mais eficiente\nTexto: A melhora da saúde metabólica impacta a circulação sanguínea. Contribui para uma pele mais saudável e aspecto mais descansado.\n\nSlide 5 — Qualidade da pele\nTítulo: Pele com aparência mais saudável\nTexto: Quando o organismo recebe nutrientes adequados e funciona equilibradamente, a pele costuma refletir. Melhora na hidratação, textura e luminosidade.\n\nSlide 6 — Mudanças além da estética\nTítulo: A mudança vai além da aparência\nTexto: As transformações visíveis são apenas parte do processo. O emagrecimento saudável melhora indicadores metabólicos, qualidade de vida e bem-estar geral.","slidesNum":"6 slides","postado":false,"month":4,"day":17,"type":"carrossel","title":"O emagrecimento muda mais do que o número na balança","pending":false,"trafego":false,"perfil":"","imgs":[]},{"caption":"Uma alimentação equilibrada não precisa ser baseada em proibições constantes.\n\nO objetivo não é eliminar tudo o que a pessoa gosta de comer, mas aprender a fazer escolhas mais conscientes e estratégicas.\n\nQuando existe planejamento e equilíbrio, é possível cuidar da saúde sem transformar a alimentação em algo difícil de sustentar.\n\n🩺 Saúde e emagrecimento\n👨‍⚕️ Dr. Ândre Pontes | CRM 52 123760-8\nAgende sua consulta pelo link da bio.","descricao":"","imgObs":"Texto central da arte:\nEquilíbrio alimentar\nnão é viver em restrição.\n\nEstilo clean, profissional. Identidade visual do Dr. Ândre Pontes.","roteiro":"","videoLink":"","slides":"","slidesNum":"","postado":false,"month":4,"day":21,"type":"arte","title":"Alimentação saudável não precisa ser sofrimento","pending":false,"trafego":false,"perfil":"","imgs":[]},{"caption":"Conteúdo já aprovado — manter conforme versão final validada.\n\n🩺 Saúde e emagrecimento\n👨‍⚕️ Dr. Ândre Pontes | CRM 52 123760-8\nEntre em contato pelo link da bio.","descricao":"","imgObs":"","roteiro":"Conteúdo já aprovado pelo Dr. Ândre Pontes.\nManter roteiro conforme versão final validada.","videoLink":"","slides":"","slidesNum":"","postado":false,"month":4,"day":23,"type":"reels","title":"Emagrecer não é só perder peso ✅","pending":false,"trafego":false,"perfil":"","imgs":[]},{"caption":"Resultados rápidos podem parecer atraentes, mas raramente são sustentáveis.\n\nMudanças duradouras acontecem quando existe acompanhamento, estratégia e adaptação do organismo ao longo do tempo.\n\nConstruir saúde é um processo contínuo que envolve hábitos, equilíbrio metabólico e acompanhamento adequado.\n\n🩺 Saúde e emagrecimento\n👨‍⚕️ Dr. Ândre Pontes | CRM 52 123760-8\nAgende sua avaliação pelo link da bio.","descricao":"","imgObs":"Texto central da arte:\nSaúde real\nse constrói com tempo.\n\nEstilo clean, profissional. Identidade visual do Dr. Ândre Pontes.","roteiro":"","videoLink":"","slides":"","slidesNum":"","postado":false,"month":4,"day":29,"type":"arte","title":"Saúde é um processo, não um atalho","pending":false,"trafego":false,"perfil":"","imgs":[]},{"month":1,"day":4,"type":"arte","title":"teste","perfil":"","caption":"","descricao":"","imgObs":"","roteiro":"","videoLink":"","slides":"","slidesNum":"","pending":false,"postado":false,"trafego":false,"imgs":[]}],"planData":{"1":{},"2":{},"3":{},"4":{"objetivos":"Dividir material institucional e também dia a dia.","investimento":"300 reais.","trafego":"300 reais em meta ads.","influenciadores":"nenhum.","persona":"Mulheres 35+, Homens 30+.","observacoes":"Tentar nova captação com temas atuais para lançar rápido."},"5":{},"6":{},"7":{},"8":{},"9":{},"10":{},"11":{},"12":{}},"monthsConfig":[{"notes":"","special":{"1":"🎆 Ano Novo","6":"🏖️ Feriado RJ"}},{"notes":"","special":{"16":"🎭 Carnaval","17":"🎭 Carnaval","18":"🎭 Quarta-feira de Cinzas"}},{"notes":"","special":{"8":"👩 Dia da Mulher","20":"🌿 Início do Outono"}},{"notes":"<strong>Dr. Ândre Pontes — Abril 2026</strong> · 10 posts (4 Reels + 4 Artes + 1 Carrossel) · Tom: profissional, educativo, equilibrado · Tema central: saúde, emagrecimento e equilíbrio metabólico","special":{"1":"🤥 Dia da Mentira","2":"🧩 Consciência do Autismo","3":"✝️ Sexta-feira Santa","5":"🐣 Páscoa","6":"São Benedito","7":"💚 Dia Mundial da Saúde","8":"🎗️ Combate ao Câncer","13":"💋 Dia do Beijo","14":"☕ Dia Mundial do Café","21":"🇧🇷 Tiradentes","22":"🌍 Dia da Terra","23":"📚 Dia Int. do Livro","24":"🥩 Dia Int. do Churrasco","28":"👩‍👧 Dia da Sogra","30":"🎷 Dia Int. do Jazz"}},{"notes":"","special":{"10":"💐 Dia das Mães","31":"🟡 Fim Maio Amarelo"}},{"notes":"","special":{"5":"🌍 Meio Ambiente","12":"💑 Dia dos Namorados"}},{"notes":"","special":{}},{"notes":"","special":{"9":"👨 Dia dos Pais"}},{"notes":"","special":{"7":"🇧🇷 Independência","15":"🛍️ Dia do Cliente","22":"🌸 Primavera"}},{"notes":"","special":{"2":"👶 Dia das Crianças","12":"🇧🇷 N.Sra. Aparecida","31":"🎃 Halloween"}},{"notes":"","special":{"2":"✝️ Finados","15":"🇧🇷 Proclamação Rep.","20":"⚫ Black Friday"}},{"notes":"","special":{"8":"🎄 Imaculada Conceição","25":"🎄 Natal","31":"🥂 Réveillon"}}]};</script>`;
-  if (src.includes('window.__PERSISTED_CALENDAR_STATE__')) {
-    src = src.replace(/<script>window\.__PERSISTED_CALENDAR_STATE__ = [\s\S]*?<\\\/script>/, injected);
-  } else {
-    src = src.replace('</body>', `${injected}\n</body>`);
-  }
-  return src;
-}
+// Autosave leve, sem interferir na lógica original.
+function setupSupabaseAutosave(){
+  const wrap = (name) => {
+    const original = window[name];
+    if(typeof original !== 'function' || original.__supabaseWrapped) return;
 
-(function bootstrapPersistedState(){
-  if (window.__PERSISTED_CALENDAR_STATE__) {
-    applyPlannerState(window.__PERSISTED_CALENDAR_STATE__);
-    renderAll();
-    if (typeof updateStats === 'function') updateStats();
-  }
-})();
-
-function inferGitHubPagesConfig(){
-  const host = window.location.hostname || '';
-  const rawPath = window.location.pathname || '/';
-  const owner = host.replace(/\.github\.io$/i,'');
-  const segments = rawPath.replace(/^\/+|\/+$/g,'').split('/').filter(Boolean);
-
-  let repo = '';
-  let filePath = 'index.html';
-
-  if(owner){
-    const isUserOrOrgPage = segments.length === 0 || (segments.length === 1 && /^index\.html?$/i.test(segments[0]));
-    if(isUserOrOrgPage){
-      repo = `${owner}.github.io`;
-      filePath = segments.length ? segments[0] : 'index.html';
-    } else {
-      repo = segments[0];
-      const rest = segments.slice(1);
-      filePath = rest.length ? rest.join('/') : 'index.html';
-    }
-  }
-
-  filePath = (filePath || 'index.html').replace(/^\/+/, '').replace(/\/+$/,'');
-  if(!filePath || !/\.html?$/i.test(filePath)){
-    filePath = filePath ? `${filePath}/index.html` : 'index.html';
-  }
-
-  return { owner, repo, branch: 'main', path: filePath, token: '' };
-}
-
-const GITHUB_CFG_KEY = 'calendar-github-pages-config-v1';
-
-function loadGitHubPagesConfig(){
-  const inferred = inferGitHubPagesConfig();
-  try{
-    const saved = JSON.parse(localStorage.getItem(GITHUB_CFG_KEY) || '{}');
-    return {
-      ...inferred,
-      branch: saved.branch || inferred.branch,
-      token: saved.token || ''
+    const wrapped = function(...args){
+      const result = original.apply(this, args);
+      setTimeout(() => {
+        try { saveLocalBackup(getSiteData()); } catch (err) { console.warn(err); }
+      }, 0);
+      return result;
     };
-  }catch(_err){
-    return inferred;
-  }
-}
 
-function saveGitHubPagesConfig(cfg){
-  const current = loadGitHubPagesConfig();
-  const next = {
-    branch: cfg.branch || current.branch || 'main',
-    token: cfg.token || ''
+    wrapped.__supabaseWrapped = true;
+    window[name] = wrapped;
   };
-  localStorage.setItem(GITHUB_CFG_KEY, JSON.stringify(next));
+
+  [
+    'savePost',
+    'deletePostByKey',
+    'togglePostado',
+    'saveDatas',
+    'savePlanField',
+    'updateTitle',
+    'removeCardThumb'
+  ].forEach(wrap);
 }
 
-function resetGitHubToken(){
-  localStorage.removeItem(GITHUB_CFG_KEY);
-  showToast('Configuração local removida. No próximo salvamento o token será solicitado novamente.');
-}
-
-async function fetchGitHubFileMeta(cfg){
-  const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}?ref=${encodeURIComponent(cfg.branch)}`;
-  const response = await fetch(url, {
-    headers: {
-      'Accept': 'application/vnd.github+json',
-      ...(cfg.token ? { 'Authorization': `Bearer ${cfg.token}` } : {})
-    }
-  });
-  if(!response.ok){
-    const text = await response.text();
-    throw new Error(`Não foi possível localizar o arquivo no GitHub (${response.status}). ${text}`);
-  }
-  return response.json();
-}
-
-async function salvarAlteracoes(){
-  try {
-    saveSiteData();
-
-    let cfg = loadGitHubPagesConfig();
-    if(!cfg.owner || !cfg.repo){
-      throw new Error('Não foi possível identificar automaticamente o repositório GitHub Pages deste site.');
-    }
-
-    if(!cfg.token){
-      const token = window.prompt('Cole seu token do GitHub com permissão de escrita no repositório:');
-      if(!token) return;
-      cfg.token = token.trim();
-      saveGitHubPagesConfig(cfg);
-    }
-
-    const meta = await fetchGitHubFileMeta(cfg);
-    const html = buildPersistentHtml();
-    const content = btoa(unescape(encodeURIComponent(html)));
-
-    const response = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/vnd.github+json',
-        'Authorization': `Bearer ${cfg.token}`
-      },
-      body: JSON.stringify({
-        message: `Atualiza calendário editorial — ${new Date().toLocaleString('pt-BR')}`,
-        content,
-        sha: meta.sha,
-        branch: cfg.branch
-      })
-    });
-
-    if(!response.ok){
-      const text = await response.text();
-      throw new Error(`Não foi possível salvar no GitHub (${response.status}). ${text}`);
-    }
-
-    showToast('✅ Alterações salvas no GitHub!');
-  } catch (err) {
-    console.error(err);
-    alert(err.message || 'Não foi possível salvar as alterações.');
-  }
-}
-
-window.addEventListener('load', carregarAlteracoes);
-
-</script><input type="file" accept="image/*" multiple="" style="display: none;"><input type="file" accept="image/*" multiple="" style="display: none;">
-
+window.addEventListener('load', () => {
+  setupSupabaseAutosave();
+  carregarAlteracoes();
+});
+</script><input type="file" accept="image/*" multiple="" style="display: none;">
 
 
 </body></html>
